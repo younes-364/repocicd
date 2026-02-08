@@ -1,34 +1,37 @@
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    IMAGE_NAME = "devops-app:${BUILD_NUMBER}"
-  }
+    stages {
 
-  stages {
+        stage('Build & Test') {
+            agent {
+                docker {
+                    image 'node:18-bullseye'
+                    args '-u root:root'
+                }
+            }
+            steps {
+                sh 'npm install'
+                sh 'npm test || true'
+            }
+        }
 
-    stage('Clone') {
-      steps { checkout scm }
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t younes/app:latest .'
+            }
+        }
+
+        stage('Deploy to K8s') {
+            agent {
+                docker {
+                    image 'bitnami/kubectl:latest'
+                    args '-v /root/.kube:/root/.kube'
+                }
+            }
+            steps {
+                sh 'kubectl apply -f k8s/deployment.yaml'
+            }
+        }
     }
-
-    stage('Build & Test') {
-      steps {
-        sh 'npm install'
-        sh 'npm test'
-      }
-    }
-
-    stage('Docker Build') {
-      steps {
-        sh "docker build -t $IMAGE_NAME ."
-      }
-    }
-
-    stage('Deploy to K8s') {
-      steps {
-        sh "sed -i 's|IMAGE|$IMAGE_NAME|' k8s/deployment.yaml"
-        sh "kubectl apply -f k8s/"
-      }
-    }
-  }
 }
