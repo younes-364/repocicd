@@ -1,13 +1,13 @@
 pipeline {
   agent {
     docker {
-      image 'node:18-bullseye'   // Debian-based Node.js image
+      image 'node:18-bullseye'
       args '-v /var/run/docker.sock:/var/run/docker.sock'
     }
   }
 
   environment {
-    IMAGE_NAME = "devops-app:${BUILD_NUMBER}"
+      IMAGE_NAME = "devops-app:${BUILD_NUMBER}"
   }
 
   stages {
