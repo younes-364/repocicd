@@ -22,9 +22,10 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to K8s') {
+        stage('Deploy to Kubernetes') {
             steps {
-                sh "docker run --rm -v $HOME/.kube:/root/.kube -v $(pwd):/workspace bitnami/kubectl:latest apply -f /workspace/k8s/deployment.yaml"
+                sh "kubectl apply -f k8s/deployment.yaml"
+                sh "kubectl apply -f k8s/service.yaml"
             }
         }
     }
