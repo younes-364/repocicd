@@ -1,25 +1,17 @@
 pipeline {
-  agent {
-    docker {
-      image 'node:18-bullseye'
-      args '-v /var/run/docker.sock:/var/run/docker.sock'
-    }
-  }
+  agent any
 
   environment {
-      IMAGE_NAME = "devops-app:${BUILD_NUMBER}"
+    IMAGE_NAME = "devops-app:${BUILD_NUMBER}"
   }
 
   stages {
+
     stage('Clone') {
-      steps {
-        git branch: 'main',
-            url: 'git@github.com:username/repo.git',
-            credentialsId: 'github-ssh-key'
-      }
+      steps { checkout scm }
     }
 
-    stage('Install & Test') {
+    stage('Build & Test') {
       steps {
         sh 'npm install'
         sh 'npm test'
