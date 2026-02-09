@@ -33,8 +33,9 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
                                                   usernameVariable: 'DOCKER_USER',
                                                   passwordVariable: 'DOCKER_PASS')]) {
-                    sh "kubectl set image deployment/node-app node-app=$DOCKER_USER/$DOCKER_IMAGE:${env.BUILD_NUMBER} -n dev"
-                    sh "kubectl rollout status deployment/node-app -n dev"
+                    // sh "kubectl set image deployment/node-app node-app=$DOCKER_USER/$DOCKER_IMAGE:${env.BUILD_NUMBER} -n dev"
+                    sh "sed 's|__IMAGE__|$DOCKER_USER/node-app:${env.BUILD_NUMBER}|g' k8s/deployment.yaml | kubectl apply -n dev -f -"
+                    // sh "kubectl rollout status deployment/node-app -n dev"
                     sh "kubectl apply -f k8s/service.yaml -n dev"
                 }
             }
