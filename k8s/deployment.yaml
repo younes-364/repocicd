@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: node-app
+  namespace: dev
 spec:
   replicas: 2
   selector:
@@ -15,5 +16,17 @@ spec:
       containers:
       - name: node-app
         image: 13694568/node-app:latest
+        env:
+        - name: DB_HOST
+          value: postgres.dev.svc.cluster.local
+        - name: DB_USER
+          value: myappuser
+        - name: DB_NAME
+          value: myappdb
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_PASSWORD
         ports:
         - containerPort: 3000
