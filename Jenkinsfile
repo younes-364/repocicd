@@ -34,7 +34,7 @@ pipeline {
                                                   usernameVariable: 'DOCKER_USER',
                                                   passwordVariable: 'DOCKER_PASS')]) {
                     sh "kubectl set image deployment/node-app node-app=$DOCKER_USER/$DOCKER_IMAGE:${env.BUILD_NUMBER} -n dev"
-                    // sh "kubectl rollout status deployment/node-app -n dev"
+                    sh "kubectl rollout status deployment/node-app -n dev"
                     sh "kubectl apply -f k8s/service.yaml -n dev"
                 }
             }
