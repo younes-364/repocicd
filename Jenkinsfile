@@ -18,7 +18,7 @@ pipeline {
                     sh "docker build -t $DOCKER_USER/$DOCKER_IMAGE:${env.BUILD_NUMBER} ."
                 }
             }
-        }
+        } 
         stage('Push Docker Image') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
@@ -35,6 +35,7 @@ pipeline {
                                                   passwordVariable: 'DOCKER_PASS')]) {
                     sh "kubectl set image deployment/node-app node-app=$DOCKER_USER/$DOCKER_IMAGE:${env.BUILD_NUMBER} -n dev"
                     sh "kubectl rollout status deployment/node-app -n dev"
+                    sh "kubectl apply -f k8s/node-app-service.yaml -n dev"
                 }
             }
         }
