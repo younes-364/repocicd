@@ -13,16 +13,16 @@ const client = new Client({
 // Connect once at startup
 client.connect()
     .then(() => console.log("✅ Connected to Postgres successfully!"))
-    .catch(err => console.error("❌ DB connection failed:", err.stack));
+    .catch(err => console.error(" DB connection failed:", err.stack));
 
 const server = http.createServer(async (req, res) => {
     try {
         const result = await client.query('SELECT NOW()');
         res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(`Hello from Kubernetes via Jenkins CI/CD 🚀\nDB connection OK\nDB Time: ${result.rows[0].now}`);
+        res.end(`Hello from Kubernetes via Jenkins CI/CD \nDB connection OK\nDB Time: ${result.rows[0].now}`);
     } catch (err) {
         res.writeHead(500, { 'Content-Type': 'text/plain' });
-        res.end(`Hello from Kubernetes via Jenkins CI/CD 🚀\n❌ DB connection failed:\n${err.message}`);
+        res.end(`Hello from Kubernetes via Jenkins CI/CD \n DB connection failed:\n${err.message}`);
     }
 });
 
