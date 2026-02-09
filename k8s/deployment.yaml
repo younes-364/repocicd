@@ -5,6 +5,11 @@ metadata:
   namespace: dev
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       app: node-app
@@ -15,7 +20,7 @@ spec:
     spec:
       containers:
       - name: node-app
-        image: 13694568/node-app:latest
+        image: __IMAGE__ #13694568/node-app:v1
         env:
         - name: DB_HOST
           value: postgres.dev.svc.cluster.local
