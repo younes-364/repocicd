@@ -24,7 +24,7 @@ client.connect()
     });
 
 const server = http.createServer((req, res) => {
-    res.end("Hello from Kubernetes via Jenkins CI/CD 🚀");
+    res.end("Hello from Kubernetes via Jenkins CI/CD hdhdhdhdh");
 });
 
 server.listen(3000, () => {
