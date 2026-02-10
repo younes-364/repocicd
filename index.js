@@ -38,6 +38,6 @@ const server = http.createServer(async (req, res) => {
     }
 });
 
-server.listen(3000, () => {
+server.listen(4000, () => {
     console.log("App running on port 4000");
 });
