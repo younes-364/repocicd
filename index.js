@@ -12,7 +12,7 @@ const client = new Client({
 
 // Connect once at startup
 client.connect()
-    .then(() => console.log("✅ Connected to Postgres successfully!"))
+    .then(() => console.log("✅ Connected to Postgres successfully!!!!"))
     .catch(err => console.error(" DB connection failed:", err.stack));
 
 const server = http.createServer(async (req, res) => {
