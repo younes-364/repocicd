@@ -1,5 +1,7 @@
 const http = require('http');
 const { Client } = require('pg');
+const client = require('prom-client');
+
 
 // Configure DB connection from env vars
 const client = new Client({
@@ -8,6 +10,16 @@ const client = new Client({
     database: process.env.DB_NAME || 'myappdb',
     password: process.env.DB_PASSWORD,
     port: 5432,
+});
+
+// Default metrics
+const collectDefaultMetrics = client.collectDefaultMetrics;
+collectDefaultMetrics();
+
+// Custom counter
+const requestCounter = new client.Counter({
+    name: 'http_requests_total',
+    help: 'Total number of HTTP requests',
 });
 
 // Connect once at startup
@@ -27,5 +39,5 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(3000, () => {
-    console.log("App running on port 3000");
+    console.log("App running on port 4000");
 });
