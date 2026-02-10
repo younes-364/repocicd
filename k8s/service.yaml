@@ -8,5 +8,5 @@ spec:
   selector:
     app: node-app
   ports:
-    - port: 3000
-      targetPort: 3000
+    - port: 4000
+      targetPort: 4000
